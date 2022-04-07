@@ -28,15 +28,15 @@ for PARAM in $@; do
     if [ "$SUBDIRECTORY" == "" ]; then
         SUBDIRECTORY=$REMOTE
     fi
-    # Rewrite all branches from the first remote, only master branches from others
+    # Rewrite all branches from the first remote, only main branches from others
     if [ "$PARAM" == "$1" ]; then
         echo "Building all branches of the remote '$REMOTE'"
         $MONOREPO_SCRIPT_DIR/load_branches_from_remote.sh $REMOTE
         $MONOREPO_SCRIPT_DIR/rewrite_history_into.sh $SUBDIRECTORY --branches
-        MERGE_REFS='master'
+        MERGE_REFS='main'
     else
-        echo "Building branch 'master' of the remote '$REMOTE'"
-        git checkout --detach $REMOTE/master
+        echo "Building branch 'monorepo' of the remote '$REMOTE'"
+        git checkout --detach $REMOTE/monorepo
         $MONOREPO_SCRIPT_DIR/rewrite_history_into.sh $SUBDIRECTORY
         MERGE_REFS="$MERGE_REFS $(git rev-parse HEAD)"
     fi
